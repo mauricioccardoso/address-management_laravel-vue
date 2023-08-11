@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  front-app:
+    build: ./frontend/docker
+    container_name: front-app
+    command: wait-for back-app:8081 -t 60 -- ./docker/start.sh
+    restart: unless-stopped
+    ports:
+      - 5173:5173
+    volumes:
+      - ./frontend:/home/node/app
+    depends_on:
+      - back-app
+    networks:
+      - network-desafio
+
+  back-app:
+    build: ./backend/docker
+    container_name: back-app
+    restart: unless-stopped
+    command: wait-for db-mysql:3306 -t 40 -- ./docker/start.sh
+    ports:
+      - 8081:8081
+    volumes:
+      - ./backend:/home/php/backend
+    depends_on:
+      - db-mysql
+    networks:
+      - network-desafio
+
+  db-mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=mydb
+      - MYSQL_ROOT_PASSWORD=mypasswordroot
+
+      #Set a user
+      - MYSQL_USER=desafio
+      #Set a password
+      - MYSQL_PASSWORD=mypassword
+    ports:
+      - 3306:3306
+    volumes:
+      - ./dbData:/var/lib/mysql
+    networks:
+      - network-desafio
+
+networks:
+  network-desafio:
+    driver: bridge
