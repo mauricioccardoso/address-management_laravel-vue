@@ -24,4 +24,9 @@ class AddressService
     {
         return $address->update($data);
     }
+
+    public function delete($address): bool
+    {
+        return $address->delete();
+    }
 }

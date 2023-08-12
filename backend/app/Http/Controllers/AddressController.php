@@ -73,4 +73,24 @@ class AddressController extends Controller
             return response()->json(['errors' => $error], 500);
         }
     }
+
+    public function destroy(Address $address): JsonResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->addressService->delete($address);
+
+            DB::commit();
+
+            return response()->json(null, 204);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $error = 'Unable to delete the selected address.';
+            Logger::log($e, $error);
+
+            return response()->json(['errors' => $error], 500);
+        }
+    }
 }
