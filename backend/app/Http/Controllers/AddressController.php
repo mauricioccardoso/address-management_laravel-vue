@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Logger;
 use App\Http\Requests\StoreAddressRequest;
+use App\Http\Requests\UpdateAddressRequest;
+use App\Models\Address;
 use App\Services\AddressService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +32,6 @@ class AddressController extends Controller
         }
     }
 
-
     public function store(StoreAddressRequest $request): JsonResponse
     {
         DB::beginTransaction();
@@ -49,6 +50,27 @@ class AddressController extends Controller
             Logger::log($e, $error);
 
             return response()->json(["error" => $error], 500);
+        }
+    }
+
+    public function update(UpdateAddressRequest $request, Address $address): JsonResponse
+    {
+        DB::beginTransaction();
+        $data = $request->all();
+
+        try {
+            $this->addressService->update($data, $address);
+
+            DB::commit();
+
+            return response()->json(null, 204);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $error = 'Unable to update the selected address.';
+            Logger::log($e, $error);
+
+            return response()->json(['errors' => $error], 500);
         }
     }
 }

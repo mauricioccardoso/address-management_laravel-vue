@@ -19,4 +19,9 @@ class AddressService
     {
         return Address::create($data);
     }
+
+    public function update($data, $address): bool
+    {
+        return $address->update($data);
+    }
 }
