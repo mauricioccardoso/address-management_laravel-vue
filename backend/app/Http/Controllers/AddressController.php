@@ -6,6 +6,7 @@ use App\Helpers\Logger;
 use App\Http\Requests\StoreAddressRequest;
 use App\Services\AddressService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class AddressController extends Controller
@@ -15,7 +16,22 @@ class AddressController extends Controller
     ) {
     }
 
-    public function store(StoreAddressRequest $request)
+    public function listAll(): JsonResponse
+    {
+        try {
+            $addresses = $this->addressService->listAll();
+
+            return response()->json($addresses);
+        } catch (Exception $e) {
+            $error = 'Unable to load the list of all address.';
+            Logger::log($e, $error);
+
+            return response()->json(["error" => $error], 500);
+        }
+    }
+
+
+    public function store(StoreAddressRequest $request): JsonResponse
     {
         DB::beginTransaction();
         $data = $request->all();

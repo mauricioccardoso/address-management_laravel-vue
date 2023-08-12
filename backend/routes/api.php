@@ -20,5 +20,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::controller(AddressController::class)->group(function () {
+    Route::get("/addresses", 'listAll');
     Route::post("/addresses", 'store');
 });
