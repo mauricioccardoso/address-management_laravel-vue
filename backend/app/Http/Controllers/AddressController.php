@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Logger;
+use App\Http\Requests\SearchAddressRequest;
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\UpdateAddressRequest;
 use App\Models\Address;
 use App\Services\AddressService;
+use App\Services\APIViaCEP;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +16,8 @@ use Illuminate\Support\Facades\DB;
 class AddressController extends Controller
 {
     public function __construct(
-        protected AddressService $addressService
+        protected AddressService $addressService,
+        protected APIViaCEP $apiViaCEP
     ) {
     }
 
@@ -88,6 +91,40 @@ class AddressController extends Controller
             DB::rollBack();
 
             $error = 'Unable to delete the selected address.';
+            Logger::log($e, $error);
+
+            return response()->json(['errors' => $error], 500);
+        }
+    }
+
+    public function search(SearchAddressRequest $request)
+    {
+        DB::beginTransaction();
+        $addressSearch = $request->all();
+
+        try {
+            // Search in Database
+            $addressResponse = $this->addressService->findByAddress($addressSearch);
+
+            // Search in ViaCEP api if not found in Database
+            if ($addressResponse->isEmpty()) {
+                $dataViaCEP = $this->apiViaCEP->searchByAddressOrCEP($addressSearch);
+
+                // Save new Address in Database if address found in ViaCEP API
+                if (!isset($dataViaCEP['errors'])) {
+                    $dataViaCEP = $this->addressService->createAddressFromViaCEP($addressSearch, $dataViaCEP);
+                }
+
+                $addressResponse = $dataViaCEP;
+            }
+
+            DB::commit();
+
+            return response()->json($addressResponse);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $error = 'Unable to find the requested address';
             Logger::log($e, $error);
 
             return response()->json(['errors' => $error], 500);

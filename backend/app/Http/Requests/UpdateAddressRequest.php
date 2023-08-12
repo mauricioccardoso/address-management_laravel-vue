@@ -34,7 +34,7 @@ class UpdateAddressRequest extends FormRequest
                 Rule::unique('addresses', 'cep')->ignore($this->address->id)
             ],
             'street' => ['required', 'string', 'min:3'],
-            'neighborhood' => ['required', 'string',],
+            'neighborhood' => ['required', 'string'],
             'city' => ['required', 'string', 'min:3'],
             'state' => ['required', 'string', 'size:2'],
         ];

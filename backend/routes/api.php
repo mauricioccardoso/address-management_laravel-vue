@@ -24,4 +24,5 @@ Route::controller(AddressController::class)->group(function () {
     Route::post("/addresses", 'store');
     Route::put("/addresses/{address}", 'update');
     Route::delete("/addresses/{address}", 'destroy');
+    Route::post("/addresses/search", 'search');
 });

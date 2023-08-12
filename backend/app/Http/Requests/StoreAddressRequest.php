@@ -26,7 +26,7 @@ class StoreAddressRequest extends FormRequest
         return [
             'cep' => ['required', 'string', 'unique:addresses,cep', 'regex:/^\d{5}-\d{3}$/'],
             'street' => ['required', 'string', 'min:3'],
-            'neighborhood' => ['required', 'string',],
+            'neighborhood' => ['required', 'string'],
             'city' => ['required', 'string', 'min:3'],
             'state' => ['required', 'string', 'size:2'],
         ];
