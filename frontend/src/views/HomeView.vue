@@ -15,8 +15,8 @@ const addresses = [
   {
     id: 1,
     street: 'Rua Teste',
-    neineighborhood: 'Ba',
-    city: 'Cid',
+    neineighborhood: 'Bairro Teste',
+    city: 'Cidade',
     state: 'TS',
     cep: '000000-000',
   },
@@ -24,8 +24,8 @@ const addresses = [
     id: 2,
     street: 'Rua Teste 2',
     neineighborhood: 'Bairro Teste 2',
-    city: 'Cidade Teste 2',
-    state: 'TS',
+    city: 'City',
+    state: 'JS',
     cep: '000000-001',
   }
 ]

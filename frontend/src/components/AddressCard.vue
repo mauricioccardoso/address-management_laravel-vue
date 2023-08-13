@@ -3,7 +3,7 @@
     <div class="card-body d-flex flex-column justify-content-between">
       <div class="mb-3">
         <h5 class="card-title">{{ street }}</h5>
-        <p class="card-text">{{ neineighborhood }}, {{ city }}/{{ state }} - {{ cep }}</p>
+        <p class="card-text">{{ neineighborhood }}, {{ city }} - {{ state }}, {{ cep }}</p>
       </div>
       <div class="d-flex justify-content-evenly">
         <button class="btn btn-primary fs-6">
