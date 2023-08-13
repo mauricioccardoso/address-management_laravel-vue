@@ -1,6 +1,6 @@
 <template>
   <header>
-    <NavBar label="Endereço">
+    <NavBar label="Endereços">
       <NavLink @click="changeView" :toPath="navLinkToPath" :label="navLinkLabel" btnClass="btn btn-secondary"
         :iconClass="navLinkIcon" />
       <NavButton label="Novo" btn-class="btn btn-success" icon-class="bi bi-plus-circle" />
