@@ -3,17 +3,7 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <main class="container">
+  <div class="container min-vh-100 app-bg p-3">
     <RouterView />
-  </main>
+  </div>
 </template>
-
-<style scoped>
-.container {
-  min-height: 100vh;
-
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-</style>
