@@ -10,23 +10,10 @@
 
 <script setup lang="ts">
 import AddressCard from '@/components/AddressCard.vue';
+import { useAddressListStore } from '@/stores/AddressListStore';
+import { computed } from 'vue';
 
-const addresses = [
-  {
-    id: 1,
-    street: 'Rua Teste',
-    neighborhood: 'Bairro Teste',
-    city: 'Cidade',
-    state: 'TS',
-    cep: '000000-000',
-  },
-  {
-    id: 2,
-    street: 'Rua Teste 2',
-    neighborhood: 'Bairro Teste 2',
-    city: 'City',
-    state: 'JS',
-    cep: '000000-001',
-  }
-]
+const addressListStore = useAddressListStore();
+
+const addresses = computed(() => addressListStore.addressList);
 </script>
