@@ -6,9 +6,9 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { useAddressListStore } from './stores/AddressListStore';
+import { useAddressStore } from './stores/AddressStore';
 
-const addressListStore = useAddressListStore();
+const addressListStore = useAddressStore();
 
 addressListStore.listAddress();
 </script>
