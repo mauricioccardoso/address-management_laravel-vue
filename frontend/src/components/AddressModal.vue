@@ -62,7 +62,7 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-success">Salvar</button>
           </div>
         </form>
@@ -75,27 +75,22 @@
 import { apiViaCep } from '@/http/viaCep'
 import { states } from '@/data/states';
 import { useformAddressData } from '@/stores/formAddressData';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, type Ref } from 'vue';
 
 const props = defineProps<{
   modalId: string,
 }>();
 
 const storeFormAddressData = useformAddressData();
-const modalTitle = ref('');
-let formData = storeFormAddressData.addressData;
+
+const formData = computed(() => storeFormAddressData.addressData);
+const modalTitle = computed(() => storeFormAddressData.titleModal);
 
 // Add event to clear form on modal close
 onMounted(() => {
   const modalElement = document.getElementById(props.modalId);
   modalElement?.addEventListener('hidden.bs.modal', storeFormAddressData.clearForm);
 });
-
-// Fill form with data on edit address
-watch(() => storeFormAddressData.titleModal, () => {
-  modalTitle.value = storeFormAddressData.titleModal;
-  formData = storeFormAddressData.addressData
-})
 
 // Format Cep
 const formatCep = async (event: any) => {
@@ -105,14 +100,14 @@ const formatCep = async (event: any) => {
   const secondPart: string = numericValue.slice(5, 8);
 
   if (numericValue.length >= 6) {
-    formData.cep = `${firstPart}-${secondPart}`;
+    formData.value.cep = `${firstPart}-${secondPart}`;
   } else {
-    formData.cep = `${firstPart}`;
+    formData.value.cep = `${firstPart}`;
     return;
   }
 
   if (numericValue.length === 8) {
-    const cep = formData.cep.replace('-', "");
+    const cep = formData.value.cep.replace('-', "");
     getAddressApiViaCEP(cep);
   }
 }
@@ -122,19 +117,19 @@ const getAddressApiViaCEP = async (cep: string) => {
   const response = await apiViaCep(cep);
 
   if (!response.erro) {
-    formData.street = response.logradouro;
-    formData.neighborhood = response.bairro;
-    formData.city = response.localidade;
-    formData.state = response.uf;
+    formData.value.street = response.logradouro;
+    formData.value.neighborhood = response.bairro;
+    formData.value.city = response.localidade;
+    formData.value.state = response.uf;
   }
 }
 
-const closeModal = ref(null)
+const closeModal: Ref<any> = ref(null)
 // Send data to backend
 const submitAddressForm = () => {
   if (closeModal.value) {
     closeModal.value.click()
   }
-  console.log('send API', formData);
+  console.log('send API', formData.value);
 }
 </script>

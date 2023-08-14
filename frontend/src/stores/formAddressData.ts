@@ -30,5 +30,9 @@ export const useformAddressData = defineStore('formAddressData', () => {
     titleModal.value = '';
   }
 
-  return { addressData, titleModal, openModal, clearForm }
+  function deleteAddressModal(data: addressDataDTO) {
+    addressData.value = data
+  }
+
+  return { addressData, titleModal, openModal, clearForm, deleteAddressModal }
 })

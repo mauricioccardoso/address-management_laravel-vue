@@ -11,7 +11,8 @@
           Editar
           <i class="bi bi-pencil-fill fs-"></i>
         </button>
-        <button class="btn btn-danger">
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAddress"
+          @click="openDeleteAddressModal">
           Excluir
           <i class="bi bi-trash2-fill"></i>
         </button>
@@ -37,6 +38,11 @@ const formAddressData = useformAddressData();
 const openEditAddressModal = () => {
   const data = { ...props }
   formAddressData.openModal('Editar Endereço', data);
+}
+
+const openDeleteAddressModal = () => {
+  const data = { ...props }
+  formAddressData.deleteAddressModal(data);
 }
 
 </script>

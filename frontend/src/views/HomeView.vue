@@ -6,10 +6,13 @@
       </AddressCard>
     </div>
   </div>
+
+  <DeleteModal></DeleteModal>
 </template>
 
 <script setup lang="ts">
 import AddressCard from '@/components/AddressCard.vue';
+import DeleteModal from '@/components/DeleteModal.vue';
 
 const addresses = [
   {
