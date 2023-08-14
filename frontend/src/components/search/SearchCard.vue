@@ -29,7 +29,7 @@
               </div>
               <div class="col-md">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="neighborhood" placeholder="Bairro" required minlength="3"
+                  <input type="text" class="form-control" id="neighborhood" placeholder="Bairro" minlength="3"
                     v-model="addressSearch.neighborhood">
                   <label for="neighborhood">Bairro</label>
                 </div>
@@ -69,8 +69,11 @@
 
 <script setup lang="ts">
 import { states } from '@/data/states';
+import { useAddressStore } from '@/stores/AddressStore';
 
 import { computed, ref, watch, type Ref } from 'vue';
+
+const addressStore = useAddressStore();
 
 const checkValue = ref(false);
 const searchType = computed(() => checkValue.value ? 'Endereço' : 'CEP');
@@ -123,15 +126,23 @@ const formatCep = async (event: any) => {
     cepSearch.value.cep = `${firstPart}`;
     return;
   }
-
-  // if (numericValue.length === 8) {
-  //   const cep = cepSearch.value.cep.replace('-', "");
-  // }
 }
 
 
 const searchAddress = () => {
-  console.log('search');
+  let data = {}
+  if (cepSearch.value.cep) {
+    console.log('cep', cepSearch.value)
+    data = cepSearch.value;
+  }
+
+  if (!cepSearch.value.cep) {
+    console.log('endereço', addressSearch.value)
+    data = addressSearch.value;
+  }
+
+  console.log('test', data)
+  addressStore.search(data);
 }
 
 </script>

@@ -13,8 +13,18 @@ interface IAddressData {
   state: string,
 }
 
+interface ISearchData {
+  cep?: string
+  street?: string,
+  neighborhood?: string,
+  city?: string,
+  state?: string,
+}
+
 export const useAddressStore = defineStore('addressListStore', () => {
   const addressesList: Ref<IAddressData[]> = ref([]);
+
+  const addressesSearch: Ref<IAddressData[]> = ref([]);
 
   async function listAddress() {
     httpClient.get('/addresses')
@@ -124,5 +134,47 @@ export const useAddressStore = defineStore('addressListStore', () => {
 
   }
 
-  return { addressesList, listAddress, save, update, deleteAddress }
+  async function search(data: ISearchData) {
+    httpClient.post('/addresses/search', data)
+      .then(({ data }) => {
+
+        if (data?.errors) {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'warning',
+            title: 'CEP ou Endereço incorreto ou não existe.',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          return;
+        }
+
+        addressesSearch.value = data
+
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Endereço encontrado.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+
+        listAddress();
+      })
+      .catch(() => {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Não foi possível buscar o endereço.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      });
+
+  }
+
+  return { addressesList, addressesSearch, listAddress, save, update, deleteAddress, search }
 })
