@@ -97,5 +97,32 @@ export const useAddressStore = defineStore('addressListStore', () => {
       });
   }
 
-  return { addressesList, listAddress, save, update }
+  async function deleteAddress(id: number) {
+    httpClient.delete(`/addresses/${id}`)
+      .then(() => {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Endereço excluído com sucesso.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+
+        listAddress();
+      })
+      .catch(() => {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Não foi possível excluír o endereço.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      });
+
+  }
+
+  return { addressesList, listAddress, save, update, deleteAddress }
 })

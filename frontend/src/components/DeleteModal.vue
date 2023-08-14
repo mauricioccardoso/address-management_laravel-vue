@@ -21,13 +21,18 @@
 </template>
 
 <script setup lang="ts">
+import { useAddressStore } from '@/stores/AddressStore';
 import { useformAddressData } from '@/stores/formAddressData';
 import { computed } from 'vue';
+
+const addressStore = useAddressStore();
 
 const storeFormAddressData = useformAddressData();
 const addressData = computed(() => storeFormAddressData.addressData);
 
 const deleteAddress = () => {
-  console.log('delete', addressData.value);
+  if (addressData.value.id) {
+    addressStore.deleteAddress(addressData.value.id);
+  }
 }
 </script>

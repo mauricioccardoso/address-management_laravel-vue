@@ -14,7 +14,7 @@ import AddressCard from '@/components/AddressCard.vue';
 import { computed } from 'vue';
 import { useAddressStore } from '@/stores/AddressStore';
 
-const addressListStore = useAddressStore();
+const addressStore = useAddressStore();
 
-const addresses = computed(() => addressListStore.addressesList);
+const addresses = computed(() => addressStore.addressesList);
 </script>
