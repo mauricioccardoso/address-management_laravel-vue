@@ -1,14 +1,8 @@
 import { ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { addressDataDTO } from '@/DTOs/adddressDataDTO';
 
-interface addressDataDTO {
-  id: number | null,
-  cep: string | null,
-  street: string | null,
-  neighborhood: string | null,
-  city: string | null,
-  state: string | null,
-}
+
 
 export const useformAddressData = defineStore('formAddressData', () => {
   const addressData: Ref<addressDataDTO> = ref({

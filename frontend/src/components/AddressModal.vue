@@ -72,10 +72,14 @@
 </template>
 
 <script setup lang="ts">
-import { apiViaCep } from '@/http/viaCep'
-import { states } from '@/data/states';
-import { useformAddressData } from '@/stores/formAddressData';
 import { computed, onMounted, ref, type Ref } from 'vue';
+import { useformAddressData } from '@/stores/formAddressData';
+import { apiViaCep } from '@/http/viaCep';
+import httpClient from '@/http';
+import Swal from 'sweetalert2';
+
+import { states } from '@/data/states';
+import type { addressDataDTO } from '@/DTOs/adddressDataDTO';
 
 const props = defineProps<{
   modalId: string,
@@ -130,6 +134,61 @@ const submitAddressForm = () => {
   if (closeModal.value) {
     closeModal.value.click()
   }
-  console.log('send API', formData.value);
+
+  if (!formData.value.id) {
+    saveNewAddress(formData.value);
+  }
+
+  if (formData.value.id) {
+    updateAddress(formData.value)
+  }
+}
+
+const saveNewAddress = async (data: addressDataDTO) => {
+  httpClient.post('/addresses', data)
+    .then(() => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Endereço salvo com sucesso.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    })
+    .catch(() => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Não foi possível salvar o endereço.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    });
+}
+
+const updateAddress = async (data: addressDataDTO) => {
+  httpClient.put(`/addresses/${data.id}`, data)
+    .then(() => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Endereço atualizado com sucesso.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    })
+    .catch(() => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Não foi possível atualizar o endereço.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    });
 }
 </script>
