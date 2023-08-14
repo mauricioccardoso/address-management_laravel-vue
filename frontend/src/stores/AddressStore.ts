@@ -94,6 +94,7 @@ export const useAddressStore = defineStore('addressListStore', () => {
         })
 
         listAddress();
+        addressesSearch.value = [];
       })
       .catch(() => {
         Swal.fire({
@@ -120,6 +121,7 @@ export const useAddressStore = defineStore('addressListStore', () => {
         })
 
         listAddress();
+        addressesSearch.value = [];
       })
       .catch(() => {
         Swal.fire({
@@ -150,7 +152,12 @@ export const useAddressStore = defineStore('addressListStore', () => {
           return;
         }
 
-        addressesSearch.value = data
+        if (data.id) {
+          addressesSearch.value = [];
+          addressesSearch.value.push(data);
+        } else {
+          addressesSearch.value = data;
+        }
 
         Swal.fire({
           toast: true,

@@ -132,16 +132,13 @@ const formatCep = async (event: any) => {
 const searchAddress = () => {
   let data = {}
   if (cepSearch.value.cep) {
-    console.log('cep', cepSearch.value)
     data = cepSearch.value;
   }
 
   if (!cepSearch.value.cep) {
-    console.log('endereço', addressSearch.value)
     data = addressSearch.value;
   }
 
-  console.log('test', data)
   addressStore.search(data);
 }
 
