@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade" id="deleteAddress" tabindex="-1" aria-labelledby="deleteAddressLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="deleteAddressLabel">Deseja Deletar o Endereço?</h1>

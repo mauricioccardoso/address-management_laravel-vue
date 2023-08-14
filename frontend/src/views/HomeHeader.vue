@@ -12,6 +12,7 @@
   <main>
     <RouterView />
     <AddressModal modalId="createEditAddressModal"></AddressModal>
+    <DeleteModal></DeleteModal>
   </main>
 </template>
 
@@ -20,8 +21,9 @@ import NavBar from '@/components/navbar/NavBar.vue';
 import NavLink from '@/components/navbar/NavLink.vue';
 import NavButton from '@/components/navbar/NavButton.vue';
 import AddressModal from '@/components/AddressModal.vue';
-import { RouterView } from 'vue-router';
+import DeleteModal from '@/components/DeleteModal.vue';
 
+import { RouterView } from 'vue-router';
 import { ref } from 'vue';
 import { useformAddressData } from '@/stores/formAddressData';
 
